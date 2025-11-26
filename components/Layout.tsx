@@ -2,21 +2,22 @@
 import React from 'react';
 import { ViewMode } from '../types';
 import { LayoutDashboard, Search, Sparkles, ListTodo, Bot, BarChart3, Settings, BookOpen } from './Icons';
+import { ShortcutsPanel } from './ShortcutsPanel';
 
-interface LayoutProps { 
-    children: React.ReactNode; 
-    currentView: ViewMode; 
-    onNavigate: (view: ViewMode) => void; 
+interface LayoutProps {
+  children: React.ReactNode;
+  currentView: ViewMode;
+  onNavigate: (view: ViewMode) => void;
 }
 
 const NavButton = ({ icon, label, active, onClick }: { icon: React.ReactNode, label: string, active?: boolean, onClick?: () => void }) => (
-  <button 
+  <button
     onClick={onClick}
     className={`w-full flex items-center justify-center lg:justify-start px-4 py-3 rounded-full transition-all duration-200 group relative
     ${active ? 'bg-blue-100/50 text-blue-700 font-medium' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'}`}
   >
-     {React.cloneElement(icon as React.ReactElement<any>, { className: `w-5 h-5 ${active ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'}` })}
-     <span className="ml-3 text-sm">{label}</span>
+    {React.cloneElement(icon as React.ReactElement<any>, { className: `w-5 h-5 ${active ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'}` })}
+    <span className="ml-3 text-sm">{label}</span>
   </button>
 );
 
@@ -27,73 +28,75 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentView, onNavigat
       <aside className="w-20 lg:w-64 border-r border-gray-200 flex flex-col bg-gray-50/80 backdrop-blur-md fixed h-full z-20">
         <div className="h-20 flex items-center justify-center lg:justify-start lg:px-8">
           <div className="flex items-center gap-2.5">
-              <img src="/logo.png" alt="Baro.ai Logo" className="w-auto h-8 object-contain" />
+            <img src="/logo.png" alt="Baro.ai Logo" className="w-auto h-8 object-contain" />
           </div>
         </div>
 
         <nav className="flex-1 py-6 px-3 space-y-1">
-          <NavButton 
-              icon={<BarChart3 />} 
-              label="인사이트" 
-              active={currentView === 'INSIGHT'} 
-              onClick={() => onNavigate('INSIGHT')}
+          <NavButton
+            icon={<BarChart3 />}
+            label="인사이트"
+            active={currentView === 'INSIGHT'}
+            onClick={() => onNavigate('INSIGHT')}
           />
-          <NavButton 
-              icon={<LayoutDashboard />} 
-              label="보드" 
-              active={currentView === 'BOARD'} 
-              onClick={() => onNavigate('BOARD')}
+          <NavButton
+            icon={<LayoutDashboard />}
+            label="보드"
+            active={currentView === 'BOARD'}
+            onClick={() => onNavigate('BOARD')}
           />
-          <NavButton 
-              icon={<Bot />} 
-              label="Gemini Pro" 
-              active={currentView === 'GEMINI'} 
-              onClick={() => onNavigate('GEMINI')}
+          <NavButton
+            icon={<Bot />}
+            label="Gemini Pro"
+            active={currentView === 'GEMINI'}
+            onClick={() => onNavigate('GEMINI')}
           />
-           <NavButton 
-              icon={<BookOpen />} 
-              label="Knowledge Hub" 
-              active={currentView === 'KNOWLEDGE'} 
-              onClick={() => onNavigate('KNOWLEDGE')}
+          <NavButton
+            icon={<BookOpen />}
+            label="Knowledge Hub"
+            active={currentView === 'KNOWLEDGE'}
+            onClick={() => onNavigate('KNOWLEDGE')}
           />
           <div className="pt-4 pb-2">
-               <div className="h-px bg-gray-200 mx-2"></div>
+            <div className="h-px bg-gray-200 mx-2"></div>
           </div>
           <NavButton icon={<ListTodo />} label="내 업무" />
           <NavButton icon={<Search />} label="검색" />
-          
+
           <div className="pt-2"></div>
-          <NavButton 
-              icon={<Settings />} 
-              label="설정" 
-              active={currentView === 'SETTINGS'} 
-              onClick={() => onNavigate('SETTINGS')}
+          <NavButton
+            icon={<Settings />}
+            label="설정"
+            active={currentView === 'SETTINGS'}
+            onClick={() => onNavigate('SETTINGS')}
           />
         </nav>
 
         <div className="p-6 border-t border-gray-100">
-           <div className="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
-              <div className="flex items-center gap-2 mb-3">
-                  <Sparkles className="w-4 h-4 text-blue-600" />
-                  <p className="text-xs font-semibold text-gray-600">AI 크레딧</p>
-              </div>
-              <div className="w-full bg-gray-100 rounded-full h-1.5 mb-2">
-                 <div className="bg-blue-600 h-1.5 rounded-full w-[45%]"></div>
-              </div>
-              <div className="flex justify-between text-[10px] text-gray-500 font-medium">
-                 <span>450 사용</span>
-                 <span>1000 한도</span>
-              </div>
-           </div>
+          <ShortcutsPanel />
+
+          <div className="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm mt-4">
+            <div className="flex items-center gap-2 mb-3">
+              <Sparkles className="w-4 h-4 text-blue-600" />
+              <p className="text-xs font-semibold text-gray-600">AI 크레딧</p>
+            </div>
+            <div className="w-full bg-gray-100 rounded-full h-1.5 mb-2">
+              <div className="bg-blue-600 h-1.5 rounded-full w-[45%]"></div>
+            </div>
+            <div className="flex justify-between text-[10px] text-gray-500 font-medium">
+              <span>450 사용</span>
+              <span>1000 한도</span>
+            </div>
+          </div>
         </div>
       </aside>
 
       {/* Main Content */}
       <main className="flex-1 ml-20 lg:ml-64 flex flex-col h-screen overflow-hidden relative">
-          {currentView === 'BOARD' && (
-              <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-50 rounded-full blur-3xl opacity-60 -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
-          )}
-          {children}
+        {currentView === 'BOARD' && (
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-50 rounded-full blur-3xl opacity-60 -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
+        )}
+        {children}
       </main>
     </div>
   );
