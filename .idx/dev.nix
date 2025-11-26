@@ -7,20 +7,13 @@
     "svelte.svelte-vscode"
     "vue.volar"
   ];
-  idx.previews = {
-    previews = {
-      web = {
-        command = [
-          "npm"
-          "run"
-          "dev"
-          "--"
-          "--port"
-          "$PORT"
-          "--host"
-          "0.0.0.0"
-        ];
-        manager = "web";
+   idx.previews = {
+        enable = true;
+        previews = {
+          web = {
+            # npm run dev 명령어를 자동으로 실행하라는 뜻입니다
+            command = ["npm" "run" "dev" "--" "--port" "$PORT" "--host" "0.0.0.0"];
+            manager = "web";
       };
     };
   };
