@@ -7,6 +7,7 @@ import { GeminiPage } from './components/GeminiPage';
 import { SettingsPage } from './components/SettingsPage';
 import { Insights } from './components/Insights';
 import { KnowledgeHub_ver2 } from './components/KnowledgeHub';
+import { ArchivePage } from './components/ArchivePage';
 import { Task, TaskStatus, Priority, ViewMode } from './types';
 import { taskService } from './services/taskService'; 
 import { runFullAnalysis } from './services/geminiService';
@@ -50,7 +51,7 @@ export default function App() {
   };
 
   const handleStatusChange = async (taskId: string, newStatus: TaskStatus) => {
-    setTasks(prev => prev.map(t => t.id === taskId ? { ...t, status: newStatus } : t));
+    setTasks(prev => prev.map(t => t.id === taskId ? { ...t, status: newStatus, updatedAt: Date.now() } : t));
     try {
       await taskService.updateStatus(taskId, newStatus);
     } catch (error) {
@@ -72,6 +73,10 @@ export default function App() {
         loadTasks();
     }
   };
+
+  const handleRestoreTask = (taskId: string) => {
+      handleStatusChange(taskId, TaskStatus.REQUESTED);
+  }
 
   const handleStartCreateTask = () => {
     const newTaskTemplate: Task = {
@@ -111,7 +116,6 @@ export default function App() {
                 ...createdTask, 
                 aiAnalysis, 
                 aiStatus: 'COMPLETED',
-                // Update subtasks from AI analysis if they exist
                 subtasks: aiAnalysis.executionPlan?.length ? aiAnalysis.executionPlan : createdTask.subtasks,
             };
             await taskService.updateTask(fullyAnalyzedTask);
@@ -167,6 +171,8 @@ export default function App() {
               return <GeminiPage />;
           case 'SETTINGS':
               return <SettingsPage />;
+          case 'ARCHIVE':
+              return <ArchivePage tasks={tasks} onRestoreTask={handleRestoreTask} onDeleteTask={handleDeleteTask} onTaskClick={handleTaskClick} />;
           default:
             return null;
       }

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { ViewMode } from '../types';
-import { LayoutDashboard, Search, Sparkles, ListTodo, Bot, BarChart3, Settings, BookOpen } from './Icons';
+import { LayoutDashboard, Search, Sparkles, ListTodo, Bot, BarChart3, Settings, BookOpen, Archive } from './Icons';
 
 interface LayoutProps { 
     children: React.ReactNode; 
@@ -55,6 +55,12 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentView, onNavigat
               label="Knowledge Hub" 
               active={currentView === 'KNOWLEDGE'} 
               onClick={() => onNavigate('KNOWLEDGE')}
+          />
+          <NavButton 
+              icon={<Archive />} 
+              label="보관함" 
+              active={currentView === 'ARCHIVE'} 
+              onClick={() => onNavigate('ARCHIVE')}
           />
           <div className="pt-4 pb-2">
                <div className="h-px bg-gray-200 mx-2"></div>

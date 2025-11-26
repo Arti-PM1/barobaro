@@ -16,6 +16,7 @@ interface KanbanColumnProps {
   onDragLeave: () => void;
   onDrop: (e: React.DragEvent, status: TaskStatus) => void;
   onDeleteTask: (taskId: string) => void;
+  onStatusChange: (taskId: string, newStatus: TaskStatus) => void;
 }
 
 export const KanbanColumn: React.FC<KanbanColumnProps> = ({
@@ -32,6 +33,7 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
   onDragLeave,
   onDrop,
   onDeleteTask,
+  onStatusChange,
 }) => {
   const isDragOver = dragOverColumn === id;
 
@@ -74,6 +76,7 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
               onDragStart={onDragStart}
               onDragEnd={onDragEnd}
               onDelete={onDeleteTask}
+              onStatusChange={onStatusChange}
             />
           ))
         )}

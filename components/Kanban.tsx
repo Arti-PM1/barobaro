@@ -25,9 +25,18 @@ export const KanbanBoard: React.FC<KanbanProps> = ({
   const [onlyMyTasks, setOnlyMyTasks] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>('NONE');
 
+  const onArchiveAll = () => {
+    tasks.forEach(task => {
+        if(task.status !== TaskStatus.ARCHIVED) {
+            onStatusChange(task.id, TaskStatus.ARCHIVED)
+        }
+    });
+  }
+
   const processedTasks = useMemo(() => {
+    const visibleTasks = tasks.filter(t => t.status !== TaskStatus.ARCHIVED);
     return getSortedAndFilteredTasks(
-      tasks,
+      visibleTasks,
       {
         query: searchQuery,
         priority: filterPriority,
@@ -66,7 +75,7 @@ export const KanbanBoard: React.FC<KanbanProps> = ({
 
   return (
     <div className="flex flex-col h-full">
-      <KanbanToolbar {...{ searchQuery, setSearchQuery, onlyMyTasks, setOnlyMyTasks, filterPriority, setFilterPriority, sortBy, setSortBy }} />
+      <KanbanToolbar {...{ searchQuery, setSearchQuery, onlyMyTasks, setOnlyMyTasks, filterPriority, setFilterPriority, sortBy, setSortBy, onArchiveAll }} />
       <div className="flex gap-8 h-full min-w-max pb-4 flex-1">
         {KANBAN_COLUMNS.map((col) => (
           <KanbanColumn
@@ -84,6 +93,7 @@ export const KanbanBoard: React.FC<KanbanProps> = ({
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
             onDeleteTask={onDeleteTask}
+            onStatusChange={onStatusChange}
           />
         ))}
       </div>

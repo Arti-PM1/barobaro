@@ -1,6 +1,6 @@
 import React from 'react';
 import { Priority } from '../types';
-import { Search, Filter, User, ArrowUpDown, Sparkles, XCircle } from './Icons';
+import { Search, Filter, User, ArrowUpDown, Sparkles, XCircle, Archive } from './Icons';
 import { SortOption } from '../utils/taskHelpers';
 
 interface KanbanToolbarProps {
@@ -12,6 +12,7 @@ interface KanbanToolbarProps {
   setFilterPriority: (priority: Priority | 'ALL') => void;
   sortBy: SortOption;
   setSortBy: (sort: SortOption) => void;
+  onArchiveAll: () => void;
 }
 
 export const KanbanToolbar: React.FC<KanbanToolbarProps> = ({
@@ -23,6 +24,7 @@ export const KanbanToolbar: React.FC<KanbanToolbarProps> = ({
   setFilterPriority,
   sortBy,
   setSortBy,
+  onArchiveAll
 }) => {
   const toggleSort = () => {
     const modes: SortOption[] = ['NONE', 'SMART', 'DUE_DATE', 'PRIORITY'];
@@ -32,25 +34,34 @@ export const KanbanToolbar: React.FC<KanbanToolbarProps> = ({
 
   return (
     <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 mb-6 px-2 flex-shrink-0">
-      {/* Left: Search */}
-      <div className="relative group w-full xl:w-72">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
-        <input
-          type="text"
-          placeholder="업무, 태그, 설명 검색..."
-          className="w-full bg-white pl-10 pr-8 py-2.5 rounded-full border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        {searchQuery && (
-          <button
-            onClick={() => setSearchQuery('')}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500"
-          >
-            <XCircle className="w-4 h-4" />
-          </button>
-        )}
-      </div>
+      {/* Left: Search and Archive */}
+      <div className="flex items-center gap-2">
+        <button
+            onClick={onArchiveAll}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium border transition-all whitespace-nowrap bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-200"
+        >
+            <Archive className="w-4 h-4" />
+            <span>전체 보관</span>
+        </button>
+        <div className="relative group w-full xl:w-72">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
+            <input
+            type="text"
+            placeholder="업무, 태그, 설명 검색..."
+            className="w-full bg-white pl-10 pr-8 py-2.5 rounded-full border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            {searchQuery && (
+            <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500"
+            >
+                <XCircle className="w-4 h-4" />
+            </button>
+            )}
+        </div>
+    </div>
 
       {/* Right: Filters & Sort */}
       <div className="flex items-center gap-2 overflow-x-auto pb-2 xl:pb-0 no-scrollbar">

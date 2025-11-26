@@ -64,7 +64,8 @@ import {
   ChevronUp, 
   ChevronLeft, 
   Rocket, 
-  Upload
+  Upload,
+  Archive
 } from 'lucide-react';
 
 export { 
@@ -132,5 +133,6 @@ export {
   ChevronUp, 
   ChevronLeft, 
   Rocket, 
-  Upload
+  Upload,
+  Archive
 };
