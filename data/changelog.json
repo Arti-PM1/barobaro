@@ -1,0 +1,80 @@
+[
+  {
+    "version": "1.8.3",
+    "date": "2025-11-25",
+    "title": "지식 허브(Knowledge Hub) 기능 추가 및 UI 고도화",
+    "description": "<h3>✨ 새로운 기능 (Knowledge Hub)</h3><ul><li><strong>지식 허브 출시:</strong> URL, 비디오, 문서 등 다양한 학습 자원을 AI가 자동으로 분석하고 요약하여 팀의 지식 자산으로 축적하는 'Knowledge Hub' 기능을 새롭게 추가했습니다.</li><li><strong>전문가 모드 (Professional Mode):</strong> 단순 등록을 넘어, Gemini Pro 모델을 활용한 심층 분석을 통해 메타데이터, 핵심 요약, 챕터 타임라인 등을 정교하게 추출합니다.</li><li><strong>강력한 분석 로직:</strong> Google Search Grounding과 자체 Fallback 로직을 결합하여, 다양한 웹 자원에 대한 분석 성공률을 극대화했습니다.</li></ul><h3>🎨 UI/UX 개선</h3><ul><li><strong>카드형 UI 개편:</strong> 직관적인 그리드 레이아웃과 페이지네이션을 적용하여 리소스 탐색 편의성을 높였습니다.</li><li><strong>다크 테마 적용:</strong> 몰입감을 높이는 세련된 다크 모드 UI 디자인을 적용했습니다.</li></ul><h3>🔧 기술적 개선</h3><ul><li><strong>Gemini 2.0 Flash 통합:</strong> 최신 Gemini 모델을 도입하여 분석 속도와 정확도를 향상시켰습니다.</li><li><strong>데이터 구조화:</strong> `KnowledgeResource` 타입을 확장하여 체계적인 메타데이터 관리가 가능하도록 설계했습니다.</li></ul>"
+  },
+  {
+    "version": "1.8.2",
+    "date": "2025-11-24",
+    "title": "AI 분석 상태 표시 아이콘 개선",
+    "description": "<h3>✨ UX 개선</h3><ul><li><strong>스마트한 상태 아이콘:</strong> AI 분석 중임을 나타내는 아이콘을 <code>Bot</code> 모양으로 변경하고 애니메이션 효과를 추가하여 의미를 명확히 했습니다.</li><li><strong>자동 숨김 처리:</strong> AI 분석이 완료되면 아이콘이 3초간 표시된 후 자동으로 사라져, 사용자의 시선을 방해하지 않도록 개선했습니다.</li><li><strong>툴팁 가시성 확보:</strong> 툴팁 위치를 조정하여 카드 밖으로 잘리지 않고 온전한 내용을 확인할 수 있도록 수정했습니다.</li></ul>"
+  },
+  {
+    "version": "1.8.1",
+    "date": "2025-11-24",
+    "title": "AI 백그라운드 분석 및 실시간 상태 표시 기능",
+    "description": "<h3>✨ UX 개선</h3><ul><li><strong>AI 백그라운드 분석:</strong> 업무 생성 시 기다릴 필요 없이 AI 분석이 백그라운드에서 실행되도록 개선하여, 끊김 없는 워크플로우를 제공합니다.</li><li><strong>실시간 상태 표시 바:</strong> 칸반 보드 카드 내에 AI 분석 상태(분석 중, 완료, 실패)를 나타내는 직관적인 상태 바(Status Bar)를 추가하여 진행 상황을 명확히 인지할 수 있도록 했습니다.</li></ul><h3>🔧 기술적 개선</h3><ul><li><strong>병렬 AI 처리:</strong> <code>Promise.all</code>을 활용하여 여러 AI 분석 작업(실행 전략, DoD, 솔루션 초안 등)을 병렬로 처리함으로써 분석 속도를 최적화했습니다.</li><li><strong>비동기 상태 관리:</strong> <code>App.tsx</code>에서 업무 생성과 AI 분석 로직을 분리하여 UI 반응성을 극대화했습니다.</li></ul>"
+  },
+  {
+    "version": "1.8.0",
+    "date": "2025-11-23",
+    "title": "지능형 업무 상세 모달 및 생산성 도구 강화",
+    "description": "<h3>✨ 새로운 기능 (Intelligent Task Detail Modal)</h3><ul><li><strong>2단 레이아웃 UI:</strong> 업무 상세 모달을 좌측 사이드바(네비게이션)와 우측 콘텐츠 영역으로 분리하여 정보 접근성을 높였습니다.</li><li><strong>AI 생산성 도구 통합:</strong> Gemini AI를 활용하여 다음 기능들을 모달 내에서 즉시 생성할 수 있습니다:<ul><li><strong>실행 전략 (Strategy):</strong> 단계별 업무 가이드 생성</li><li><strong>완료 조건 (DoD):</strong> QA 및 배포를 위한 검증 기준 자동 생성</li><li><strong>솔루션 초안 (Solution Draft):</strong> 개발 구현을 위한 기술 문서 및 코드 스니펫 작성</li><li><strong>학습 자료 (Resources):</strong> 관련 기술 문서 및 튜토리얼 링크 추천</li></ul></li><li><strong>인라인 에디팅:</strong> 제목, 설명, 상태 등을 클릭 한 번으로 수정할 수 있는 직관적인 UX를 제공합니다.</li></ul><h3>🔧 기술적 개선</h3><ul><li><strong>데이터 구조 확장:</strong> <code>Task</code> 인터페이스에 <code>aiAnalysis</code> 필드를 고도화하여 다양한 AI 분석 결과를 저장하도록 개선했습니다.</li><li><strong>프롬프트 서비스 업데이트:</strong> <code>AI_FEATURES</code> 레지스트리에 새로운 기능들을 추가하고 문서를 자동화했습니다.</li></ul>"
+  },
+  {
+    "version": "1.7.0",
+    "date": "2025-11-23",
+    "title": "자동화된 릴리즈 및 문서화 시스템 구축",
+    "description": "<h3>🚀 시스템 개선</h3><ul><li><strong>SSOT 기반 데이터 구조:</strong> <code>services/prompts.ts</code>를 메타데이터 중심의 <code>AI_FEATURES</code> 구조로 개편하여, 코드 수정이 문서와 UI에 즉시 반영되도록 했습니다.</li><li><strong>릴리즈 자동화:</strong> <code>npm run release</code> 명령어를 통해 버전 관리와 Changelog 작성을 자동화했습니다.</li><li><strong>문서 자동 생성:</strong> 빌드 시 <code>scripts/generate-docs.ts</code>가 실행되어 최신 코드를 기반으로 Markdown 문서를 자동 생성합니다.</li></ul>"
+  },
+  {
+    "version": "1.6.0",
+    "date": "2025-11-23",
+    "title": "업무 생성 UX 개선 및 배포 시스템 안정화",
+    "description": "<h3>✨ UX 개선</h3><ul><li>업무 생성 방식을 개선하여 '새 요청 만들기' 버튼 클릭 시 임시 업무가 생성되도록 변경했습니다. 이제 모달 창 내에서 '업무 생성 완료' 버튼을 클릭해야만 최종적으로 업무가 저장되어 사용자 실수를 줄였습니다.</li></ul><h3>🐛 버그 수정</h3><ul><li>배포 시 <code>Icons.tsx</code> 모듈 내보내기 문제로 인한 빌드 실패 오류를 해결했습니다. 누락된 아이콘(<code>FileCode</code>, <code>CheckSquare</code>)을 추가하여 안정적인 빌드 환경을 구축했습니다.</li></ul>"
+  },
+  {
+    "version": "1.5.0",
+    "date": "2025-11-22",
+    "title": "Cypress 테스트 시스템 도입 시도 및 롤백",
+    "description": "<h3>✅ 테스트</h3><ul><li>Cypress를 도입하여 애플리케이션의 주요 기능에 대한 자동화된 End-to-End 테스트 환경을 구축했습니다. 이를 통해 기능의 안정성을 지속적으로 검증할 수 있게 되었습니다.</li></ul><h3>🤖 자동화</h3><ul><li>테스트 실행 결과가 '인사이트 > 기능 상태 대시보드'에 자동으로 반영되도록 Node.js 기반의 리포팅 스크립트를 구현했습니다. 이제 대시보드는 실제 테스트 결과를 기반으로 한 \"살아있는\" 데이터를 보여줍니다.</li></ul><h3>🔧 CI/CD</h3><ul><li><code>npm run test</code> 스크립트를 전체 테스트 파이프라인과 연동하여, 향후 CI/CD 환경에서 코드 품질을 자동으로 검증할 수 있는 기반을 마련했습니다.</li></ul><h3>↩️ 롤백</h3><p>현재 개발 환경의 GUI 라이브러리 부재로 인해 Cypress가 정상 작동하지 않음을 확인하고, 관련 설정을 모두 제거하여 프로젝트 안정성을 확보했습니다. 테스트 자동화는 추후 CI/CD 환경에서 재도입을 검토합니다.</p>"
+  },
+  {
+    "version": "1.4.0",
+    "date": "2025-11-22",
+    "title": "팀 인사이트 대시보드(Insights) 출시",
+    "description": "<h3>✨ 새로운 기능</h3><ul><li>데이터 기반의 의사결정을 돕는 '팀 인사이트' 기능이 추가되었습니다. Gemini AI가 주간 업무 흐름을 분석하여 핵심 인사이트를 제공합니다.</li></ul><h3>📊 KPI 지표</h3><ul><li>마감 초과(Overdue), 주간 속도(Velocity), 정체된 업무(Stuck), 긴급 처리율(Resolution) 등 4가지 핵심 지표를 통해 팀의 상태를 직관적으로 파악할 수 있습니다.</li></ul><h3>🎨 UI 개선</h3><ul><li>디자인 시스템 가이드를 준수하여 폰트 크기, 아이콘, 컬러 팔레트를 재정비했습니다. 특히 AI 분석 로딩 시 스켈레톤 UI를 적용하여 사용자 경험을 개선했습니다.</li></ul>"
+  },
+  {
+    "version": "1.3.0",
+    "date": "2025-11-22",
+    "title": "칸반 보드 구조 개선 및 데이터 최신화",
+    "description": "<h3>♻️ 리팩토링</h3><ul><li>거대해진 <code>Kanban.tsx</code> 파일을 <code>TaskCard</code>, <code>KanbanColumn</code>, <code>KanbanToolbar</code> 컴포넌트로 분리하여 코드의 가독성과 유지보수성을 대폭 향상시켰습니다.</li><li>날짜 포맷팅 로직을 <code>utils/formatters.ts</code>로 분리하고 재사용성을 높였습니다.</li></ul><h3>📅 데이터 업데이트</h3><ul><li>프로젝트 내의 모든 날짜 데이터(초기 태스크, Changelog)를 2025년 11월 기준으로 최신화하고, 날짜 표기가 한국 시간대(KST)를 따르도록 개선했습니다.</li></ul>"
+  },
+  {
+    "version": "1.2.1",
+    "date": "2025-11-22",
+    "title": "UI 버그 및 타입스크립트 오류 수정",
+    "description": "<h3>🐛 버그 수정</h3><ul><li><code>TaskStatus</code> 타입 참조 오류로 인해 앱 빌드가 실패하던 문제를 해결했습니다.</li><li>사이드바의 로고 이미지가 찌그러져 보이던 현상을 이미지 원본 비율을 유지하도록 수정했습니다.</li></ul><h3>🚀 개선</h3><ul><li>표준적이지 않은 CSS <code>@import</code> 방식의 폰트 로딩을 HTML <code>&lt;link&gt;</code> 태그 방식으로 변경하여 안정성을 개선했습니다.</li></ul>"
+  },
+  {
+    "version": "1.2.0",
+    "date": "2025-11-21",
+    "title": "Changelog UI 개선 및 히스토리 기록",
+    "description": "<h3>✨ 새로운 기능 및 개선</h3><ul><li>Changelog의 각 버전 내용을 접고 펼 수 있는 아코디언 UI를 적용하여 가독성을 향상시켰습니다.</li><li>최신 버전의 변경사항이 기본적으로 펼쳐지도록 하여 사용 편의성을 높였습니다.</li></ul><h3>📝 문서</h3><p>아이콘 모듈 로딩 오류의 원인이었던 개발 서버 캐시 문제와 그 해결 과정을 <code>changelog.json</code>에 상세히 기록하여, 유사한 문제를 겪을 다른 개발자들에게 좋은 학습 자료가 되도록 했습니다.</p>"
+  },
+  {
+    "version": "1.1.0",
+    "date": "2025-11-20",
+    "title": "Changelog 페이지 구축 및 개발 서버 캐시 이슈 해결",
+    "description": "<h3>✨ 새로운 기능</h3><ul><li>프로젝트의 변경 이력과 주요 기능의 상태를 한눈에 확인할 수 있는 <strong>Changelog & 기능 상태 페이지</strong>를 추가했습니다. (<code>components/ChangelogPage.tsx</code>)</li><li>사이드바에 Changelog 메뉴를 연동하여 접근성을 높였습니다. (<code>components/Layout.tsx</code>, <code>App.tsx</code>)</li><li>Changelog 데이터 관리를 위한 <code>changelog.json</code>, <code>features.json</code> 데이터 구조를 정의했습니다.</li></ul><h3>😥 겪었던 어려움</h3><p><code>lucide-react</code> 라이브러리에서 <code>GitCommit</code>, <code>AlertTriangle</code> 등의 아이콘을 새로 추가했지만, 브라우저에서 <code>SyntaxError: The requested module does not provide an export named '...'</code> 오류가 지속적으로 발생했습니다. <code>components/Icons.tsx</code> 파일에 아이콘을 정상적으로 추가하고 export했음에도 불구하고, 이를 import하는 컴포넌트에서 모듈을 찾지 못하는 문제가 있었습니다.</p><h3>💡 해결 방법 및 학습 내용</h3><p>이 문제의 핵심 원인은 <strong>개발 서버의 캐시(cache)</strong>였습니다. Vite, Next.js와 같은 최신 프론트엔드 개발 도구는 빠른 개발 경험을 위해 한번 빌드한 모듈 정보를 캐싱합니다. 이 때문에 <code>Icons.tsx</code> 파일의 변경 사항이 즉시 반영되지 않고, 이전 버전의 캐시된 모듈 정보를 계속 참조하여 오류가 발생했던 것입니다.</p><p>단순히 코드를 수정하는 것만으로는 해결되지 않았고, <strong><code>npm run dev</code> 명령어로 개발 서버를 완전히 재시작</strong>하여 캐시를 비우고 모든 모듈을 새로 불러오게 한 후에야 문제가 해결되었습니다.</p><p><strong>배운 점:</strong> 프론트엔드 개발 중, 특히 모듈(export/import) 관련 문제가 코드 수정으로 명확히 해결되지 않을 때는, 코드 자체의 문제보다는 <strong>개발 환경의 캐시 문제</strong>일 가능성을 높게 의심하고, 개발 서버를 재시작해보는 것이 아주 효과적인 해결책이 될 수 있다는 것을 배웠습니다.</p>"
+  },
+  {
+    "version": "1.0.0",
+    "date": "2025-11-15",
+    "title": "칸반 보드 및 AI 분석 기능",
+    "description": "<h3>✨ 새로운 기능</h3><ul><li>기본 칸반 보드 UI 구현 (업무 생성, 상태 변경, 삭제)</li><li>Gemini AI를 활용한 업무 자동 분석 및 제안 기능 추가</li></ul><h3>😥 겪었던 어려움</h3><p>AI가 제안하는 내용의 일관성을 유지하고, 사용자가 원하는 결과물을 생성하도록 프롬프트를 튜닝하는 과정이 복잡했습니다.</p><h3>💡 해결 방법</h3><p><code>services/prompts.ts</code> 파일을 생성하여 프롬프드와 비즈니스 로직을 분리했습니다. 이를 통해 AI의 역할을 명확히 정의하고, 응답 결과물의 퀄리티를 안정적으로 관리할 수 있게 되었습니다.</p>"
+  }
+]

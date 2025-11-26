@@ -1,0 +1,7 @@
+{
+  "name": "Nexus AI Task Manager",
+  "description": "A premium, AI-powered task management platform featuring Glassmorphism design, intelligent workflow analysis, and automated guidance using Google Gemini.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
