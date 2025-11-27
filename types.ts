@@ -6,7 +6,8 @@ export enum TaskStatus {
   SENT = 'SENT',
   FEEDBACK = 'FEEDBACK',
   DONE = 'DONE',
-  CANCELLED = 'CANCELLED'
+  CANCELLED = 'CANCELLED',
+  ARCHIVED = 'ARCHIVED'
 }
 
 export enum Priority {
@@ -15,7 +16,7 @@ export enum Priority {
   LOW = 'LOW'
 }
 
-export type ViewMode = 'BOARD' | 'GEMINI' | 'INSIGHT' | 'SETTINGS' | 'KNOWLEDGE';
+export type ViewMode = 'BOARD' | 'GEMINI' | 'INSIGHT' | 'SETTINGS' | 'KNOWLEDGE' | 'ARCHIVE';
 
 export interface User {
   id: string;
