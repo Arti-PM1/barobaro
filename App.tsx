@@ -8,7 +8,7 @@ import { SettingsPage } from './components/SettingsPage';
 import { Insights } from './components/Insights';
 import { KnowledgeHub_ver2 } from './components/KnowledgeHub';
 import { Task, TaskStatus, Priority, ViewMode } from './types';
-import { taskService } from './services/taskService'; 
+import { taskService } from './services/taskService';
 import { runFullAnalysis } from './services/geminiService';
 import { Plus } from './components/Icons';
 
@@ -36,16 +36,16 @@ export default function App() {
 
   const handleUpdateTask = async (updated: Task) => {
     if (tempTask) {
-       setTempTask(updated);
+      setTempTask(updated);
     } else {
-       setTasks(prev => prev.map(t => t.id === updated.id ? updated : t));
-       setSelectedTask(updated);
-       try {
-         await taskService.updateTask(updated);
-       } catch (error) {
-         console.error("Failed to update task", error);
-         loadTasks(); 
-       }
+      setTasks(prev => prev.map(t => t.id === updated.id ? updated : t));
+      setSelectedTask(updated);
+      try {
+        await taskService.updateTask(updated);
+      } catch (error) {
+        console.error("Failed to update task", error);
+        loadTasks();
+      }
     }
   };
 
@@ -58,37 +58,37 @@ export default function App() {
       loadTasks();
     }
   };
-  
+
   const handleDeleteTask = async (taskId: string) => {
     setTasks(prev => prev.filter(t => t.id !== taskId));
     if (selectedTask?.id === taskId) {
-        setIsModalOpen(false);
-        setSelectedTask(null);
+      setIsModalOpen(false);
+      setSelectedTask(null);
     }
     try {
-        await taskService.deleteTask(taskId);
+      await taskService.deleteTask(taskId);
     } catch (error) {
-        console.error("Failed to delete task", error);
-        loadTasks();
+      console.error("Failed to delete task", error);
+      loadTasks();
     }
   };
 
   const handleStartCreateTask = () => {
     const newTaskTemplate: Task = {
-        id: `t${Date.now()}`,
-        title: '새로운 업무 요청',
-        description: '',
-        product: '일반',
-        type: '기타',
-        priority: Priority.MEDIUM,
-        status: TaskStatus.REQUESTED,
-        dueDate: new Date().toISOString(),
-        assigneeId: 'u1',
-        requesterId: 'u2',
-        subtasks: [],
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-        aiStatus: 'PENDING',
+      id: `t${Date.now()}`,
+      title: '새로운 업무 요청',
+      description: '',
+      product: '일반',
+      type: '기타',
+      priority: Priority.MEDIUM,
+      status: TaskStatus.REQUESTED,
+      dueDate: new Date().toISOString(),
+      assigneeId: 'u1',
+      requesterId: 'u2',
+      subtasks: [],
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+      aiStatus: 'PENDING',
     };
     setTempTask(newTaskTemplate);
     setSelectedTask(null);
@@ -102,87 +102,122 @@ export default function App() {
     setTempTask(null);
 
     try {
-        const createdTask = await taskService.createTask(taskWithProcessing);
-        setTasks(prev => prev.map(t => t.id === finalTask.id ? createdTask : t));
+      const createdTask = await taskService.createTask(taskWithProcessing);
+      setTasks(prev => prev.map(t => t.id === finalTask.id ? createdTask : t));
 
-        // Run AI analysis in the background
-        runFullAnalysis(createdTask).then(async (aiAnalysis) => {
-            const fullyAnalyzedTask: Task = { 
-                ...createdTask, 
-                aiAnalysis, 
-                aiStatus: 'COMPLETED',
-                // Update subtasks from AI analysis if they exist
-                subtasks: aiAnalysis.executionPlan?.length ? aiAnalysis.executionPlan : createdTask.subtasks,
-            };
-            await taskService.updateTask(fullyAnalyzedTask);
-            setTasks(prev => prev.map(t => t.id === createdTask.id ? fullyAnalyzedTask : t));
-        }).catch(async (error) => {
-            console.error("AI analysis failed:", error);
-            const failedTask = { ...createdTask, aiStatus: 'FAILED' as const };
-            await taskService.updateTask(failedTask);
-            setTasks(prev => prev.map(t => t.id === createdTask.id ? failedTask : t));
-        });
+      // Run AI analysis in the background
+      runFullAnalysis(createdTask).then(async (aiAnalysis) => {
+        const fullyAnalyzedTask: Task = {
+          ...createdTask,
+          aiAnalysis,
+          aiStatus: 'COMPLETED',
+          // Update subtasks from AI analysis if they exist
+          subtasks: aiAnalysis.executionPlan?.length ? aiAnalysis.executionPlan : createdTask.subtasks,
+        };
+        await taskService.updateTask(fullyAnalyzedTask);
+        setTasks(prev => prev.map(t => t.id === createdTask.id ? fullyAnalyzedTask : t));
+      }).catch(async (error) => {
+        console.error("AI analysis failed:", error);
+        const failedTask = { ...createdTask, aiStatus: 'FAILED' as const };
+        await taskService.updateTask(failedTask);
+        setTasks(prev => prev.map(t => t.id === createdTask.id ? failedTask : t));
+      });
 
     } catch (error) {
-        console.error("Failed to create task", error);
-        setTasks(prev => prev.filter(t => t.id !== finalTask.id));
+      console.error("Failed to create task", error);
+      setTasks(prev => prev.filter(t => t.id !== finalTask.id));
     }
   }
 
-  const renderContent = () => {
-      switch (currentView) {
-          case 'INSIGHT':
-              return <Insights tasks={tasks} />;
-          case 'KNOWLEDGE':
-              return <KnowledgeHub_ver2 />;
-          case 'BOARD':
-              return (
-                <>
-                    <header className="h-20 flex items-center justify-between px-8 z-10 shrink-0 backdrop-blur-sm bg-white/50 sticky top-0">
-                        <div>
-                            <h1 className="text-2xl font-bold text-gray-900 tracking-tight">프로젝트 보드</h1>
-                            <p className="text-sm text-gray-500 mt-1">팀의 업무 흐름을 AI와 함께 최적화하세요.</p>
-                        </div>
-                        
-                        <div className="flex items-center gap-4">
-                            <button onClick={handleStartCreateTask} className="flex items-center gap-2 bg-black hover:bg-gray-800 text-white px-6 py-2.5 rounded-full text-sm font-medium transition-all shadow-md hover:shadow-lg active:scale-95">
-                                <Plus className="w-4 h-4" />
-                                <span>새 요청 만들기</span>
-                            </button>
-                            <div className="w-10 h-10 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-600 font-medium text-sm">ME</div>
-                        </div>
-                    </header>
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Check if user is typing in an input or textarea
+      const target = e.target as HTMLElement;
+      const isInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable;
 
-                    <div className="flex-1 overflow-x-auto overflow-y-hidden p-8 pt-4">
-                        <KanbanBoard 
-                            tasks={tasks} 
-                            onTaskClick={handleTaskClick}
-                            onStatusChange={handleStatusChange}
-                            onDeleteTask={handleDeleteTask}
-                        />
-                    </div>
-                </>
-              );
-          case 'GEMINI':
-              return <GeminiPage />;
-          case 'SETTINGS':
-              return <SettingsPage />;
-          default:
-            return null;
+      // Alt + N: New Task
+      if (e.altKey && (e.key === 'n' || e.key === 'N')) {
+        e.preventDefault();
+        handleStartCreateTask();
       }
+
+      // Esc: Close Modal
+      if (e.key === 'Escape') {
+        if (isModalOpen) {
+          setIsModalOpen(false);
+          setTempTask(null);
+        }
+      }
+
+      // Del: Delete Task
+      if (e.key === 'Delete' && !isInput) {
+        // If modal is open and we have a selected task (not a new temp one being created)
+        if (isModalOpen && selectedTask && !tempTask) {
+          if (window.confirm('정말로 이 업무를 삭제하시겠습니까?')) {
+            handleDeleteTask(selectedTask.id);
+          }
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isModalOpen, selectedTask, tempTask]);
+
+  const renderContent = () => {
+    switch (currentView) {
+      case 'INSIGHT':
+        return <Insights tasks={tasks} />;
+      case 'KNOWLEDGE':
+        return <KnowledgeHub_ver2 />;
+      case 'BOARD':
+        return (
+          <>
+            <header className="h-20 flex items-center justify-between px-8 z-10 shrink-0 backdrop-blur-sm bg-white/50 sticky top-0">
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900 tracking-tight">프로젝트 보드</h1>
+                <p className="text-sm text-gray-500 mt-1">팀의 업무 흐름을 AI와 함께 최적화하세요.</p>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <button onClick={handleStartCreateTask} className="flex items-center gap-2 bg-black hover:bg-gray-800 text-white px-6 py-2.5 rounded-full text-sm font-medium transition-all shadow-md hover:shadow-lg active:scale-95">
+                  <Plus className="w-4 h-4" />
+                  <span>새 요청 만들기</span>
+                </button>
+                <div className="w-10 h-10 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-600 font-medium text-sm">ME</div>
+              </div>
+            </header>
+
+            <div className="flex-1 overflow-x-auto overflow-y-hidden p-8 pt-4">
+              <KanbanBoard
+                tasks={tasks}
+                onTaskClick={handleTaskClick}
+                onStatusChange={handleStatusChange}
+                onDeleteTask={handleDeleteTask}
+              />
+            </div>
+          </>
+        );
+      case 'GEMINI':
+        return <GeminiPage />;
+      case 'SETTINGS':
+        return <SettingsPage />;
+      default:
+        return null;
+    }
   }
 
   return (
     <Layout currentView={currentView} onNavigate={setCurrentView}>
       {renderContent()}
-      
+
       {(selectedTask || tempTask) && (
-        <AIModal 
+        <AIModal
           task={selectedTask || tempTask!}
           isOpen={isModalOpen}
           onClose={() => {
-              setIsModalOpen(false);
-              setTempTask(null);
+            setIsModalOpen(false);
+            setTempTask(null);
           }}
           onUpdateTask={handleUpdateTask}
           onCreateTask={tempTask ? handleFinalizeCreateTask : undefined}
