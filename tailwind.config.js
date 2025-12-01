@@ -14,7 +14,6 @@ export default {
         google: {
           grey: '#F8F9FA',
           text: '#202124',
-          subtext: '#5F6368',
           blue: '#1A73E8',
         }
       },

@@ -37,8 +37,8 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
 
   return (
     <div
-      className={`w-[340px] flex flex-col h-full rounded-3xl transition-colors duration-300 ease-in-out px-2 py-2
-            ${isDragOver ? 'bg-blue-50/60 ring-2 ring-blue-200 ring-inset' : 'bg-transparent'}
+      className={`w-[340px] flex flex-col h-full rounded-xl transition-colors duration-300 ease-in-out px-2 py-2
+            ${isDragOver ? 'bg-blue-50/60 ring-2 ring-blue-200 ring-inset' : 'bg-google-grey'}
         `}
       onDragOver={(e) => onDragOver(e, id)}
       onDragLeave={onDragLeave}
@@ -47,11 +47,11 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
       <div className="flex items-center justify-between mb-6 px-2 mt-2">
         <div className="flex items-center gap-2">
           <div className={`w-2 h-2 rounded-full ${dotColor}`}></div>
-          <h3 className="font-bold text-gray-700 text-sm">{label}</h3>
+          <h3 className="font-semibold text-gray-800 text-base">{label}</h3>
         </div>
         <span
           className={`text-xs font-medium px-2.5 py-1 rounded-full transition-colors
-            ${isDragOver ? 'bg-blue-200 text-blue-700' : 'bg-gray-100 text-gray-500'}
+            ${isDragOver ? 'bg-blue-200 text-blue-700' : 'bg-gray-200 text-gray-600'}
         `}
         >
           {tasks.length}
@@ -60,8 +60,8 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
 
       <div className="flex-1 overflow-y-auto px-1 space-y-4 pb-20 custom-scrollbar">
         {tasks.length === 0 && !isDragOver ? (
-          <div className="flex flex-col items-center justify-center h-32 text-gray-300 border-2 border-dashed border-gray-100 rounded-2xl">
-            <span className="text-xs">업무 없음</span>
+          <div className="flex flex-col items-center justify-center h-32 text-gray-400 border-2 border-dashed border-gray-200 rounded-xl">
+            <span className="text-sm">업무 없음</span>
           </div>
         ) : (
           tasks.map((task, index) => (
@@ -79,7 +79,7 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
         )}
 
         {isDragOver && tasks.length === 0 && (
-          <div className="h-32 rounded-2xl border-2 border-dashed border-blue-200 bg-blue-50/30 flex items-center justify-center">
+          <div className="h-32 rounded-xl border-2 border-dashed border-blue-200 bg-blue-50/30 flex items-center justify-center">
             <span className="text-blue-400 text-sm font-medium">여기에 놓으세요</span>
           </div>
         )}
