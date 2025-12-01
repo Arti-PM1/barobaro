@@ -89,7 +89,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentView, onNavigat
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 ml-20 lg:ml-64 flex flex-col h-screen overflow-hidden relative">
+      <main className="flex-1 ml-20 lg:ml-64 flex flex-col h-screen overflow-hidden relative px-8">
           {currentView === 'BOARD' && (
               <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-50 rounded-full blur-3xl opacity-60 -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
           )}

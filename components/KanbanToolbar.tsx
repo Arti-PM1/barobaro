@@ -31,21 +31,21 @@ export const KanbanToolbar: React.FC<KanbanToolbarProps> = ({
   };
 
   return (
-    <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 mb-6 px-2 flex-shrink-0">
+    <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 mb-6 px-2 flex-shrink-0 pt-6">
       {/* Left: Search */}
       <div className="relative group w-full xl:w-72">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
+        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-google-blue transition-colors" />
         <input
           type="text"
           placeholder="업무, 태그, 설명 검색..."
-          className="w-full bg-white pl-10 pr-8 py-2.5 rounded-full border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm"
+          className="w-full bg-white pl-10 pr-8 py-3 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-google-blue transition-all shadow-sm"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
         {searchQuery && (
           <button
             onClick={() => setSearchQuery('')}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
           >
             <XCircle className="w-4 h-4" />
           </button>
@@ -54,28 +54,22 @@ export const KanbanToolbar: React.FC<KanbanToolbarProps> = ({
 
       {/* Right: Filters & Sort */}
       <div className="flex items-center gap-2 overflow-x-auto pb-2 xl:pb-0 no-scrollbar">
-        {/* Filter Label */}
-        <div className="flex items-center gap-1.5 px-3 py-1.5 text-gray-400 border-r border-gray-200 mr-2 hidden md:flex">
-          <Filter className="w-3.5 h-3.5" />
-          <span className="text-xs font-medium">필터</span>
-        </div>
-
         {/* My Tasks Toggle */}
         <button
           onClick={() => setOnlyMyTasks(!onlyMyTasks)}
-          className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border transition-all whitespace-nowrap
+          className={`flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium transition-all whitespace-nowrap shadow-md
                         ${
                           onlyMyTasks
-                            ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-200'
-                            : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                            ? 'bg-black text-white border-transparent hover:bg-gray-800'
+                            : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
                         }`}
         >
-          <User className="w-4 h-4" />
+          <User className={`w-4 h-4 ${onlyMyTasks ? 'text-white' : 'text-gray-500'}`} />
           내 업무
         </button>
 
         {/* Priority Chips */}
-        <div className="flex bg-white rounded-full p-1 border border-gray-200 shadow-sm">
+        <div className="flex bg-white rounded-full p-1 border border-gray-300 shadow-sm">
           {(['ALL', Priority.HIGH, Priority.MEDIUM, Priority.LOW] as const).map((p) => (
             <button
               key={p}
@@ -83,7 +77,7 @@ export const KanbanToolbar: React.FC<KanbanToolbarProps> = ({
               className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all whitespace-nowrap
                                 ${
                                   filterPriority === p
-                                    ? 'bg-gray-900 text-white shadow-sm'
+                                    ? 'bg-black text-white shadow-sm'
                                     : 'text-gray-500 hover:bg-gray-100'
                                 }`}
             >
@@ -97,26 +91,26 @@ export const KanbanToolbar: React.FC<KanbanToolbarProps> = ({
             </button>
           ))}
         </div>
-
+        
         <div className="w-px h-6 bg-gray-200 mx-2 hidden md:block"></div>
 
         {/* Sort Dropdown */}
         <button
           onClick={toggleSort}
-          className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border transition-all whitespace-nowrap min-w-[140px] justify-center
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-all whitespace-nowrap min-w-[140px] justify-center
                         ${
                           sortBy !== 'NONE'
-                            ? 'bg-indigo-50 text-indigo-600 border-indigo-100'
-                            : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                            ? 'bg-gray-100 text-gray-800 border-gray-300'
+                            : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                         }`}
         >
           {sortBy === 'SMART' ? (
-            <Sparkles className="w-4 h-4 text-indigo-500" />
+            <Sparkles className="w-4 h-4 text-purple-500" />
           ) : (
-            <ArrowUpDown className="w-4 h-4" />
+            <ArrowUpDown className="w-4 h-4 text-gray-500" />
           )}
           <span>
-            {sortBy === 'NONE' && '정렬 없음'}
+            {sortBy === 'NONE' && '정렬'}
             {sortBy === 'SMART' && '스마트 정렬'}
             {sortBy === 'DUE_DATE' && '마감일순'}
             {sortBy === 'PRIORITY' && '우선순위순'}
