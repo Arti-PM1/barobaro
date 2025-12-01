@@ -23,6 +23,25 @@ export default function App() {
     loadTasks();
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.altKey && event.key.toLowerCase() === 'n') {
+            event.preventDefault();
+            handleStartCreateTask();
+        }
+
+        if (event.key === 'Delete' && isModalOpen && selectedTask) {
+            event.preventDefault();
+            handleDeleteTask(selectedTask.id);
+        }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isModalOpen, selectedTask]);
+
   const loadTasks = async () => {
     const loadedTasks = await taskService.getAllTasks();
     setTasks(loadedTasks);
@@ -186,6 +205,7 @@ export default function App() {
           }}
           onUpdateTask={handleUpdateTask}
           onCreateTask={tempTask ? handleFinalizeCreateTask : undefined}
+          onDeleteTask={handleDeleteTask}
         />
       )}
     </Layout>

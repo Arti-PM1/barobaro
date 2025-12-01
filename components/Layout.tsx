@@ -1,7 +1,7 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { ViewMode } from '../types';
-import { LayoutDashboard, Search, Sparkles, ListTodo, Bot, BarChart3, Settings, BookOpen } from './Icons';
+import { LayoutDashboard, Search, Sparkles, ListTodo, Bot, BarChart3, Settings, BookOpen, ChevronDown, ChevronRight } from './Icons';
 
 interface LayoutProps { 
     children: React.ReactNode; 
@@ -19,6 +19,35 @@ const NavButton = ({ icon, label, active, onClick }: { icon: React.ReactNode, la
      <span className="ml-3 text-sm">{label}</span>
   </button>
 );
+
+const Shortcuts = () => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleOpen = () => {
+        setIsOpen(!isOpen);
+    };
+
+    return (
+        <div className="px-3">
+            <button onClick={toggleOpen} className="w-full flex items-center gap-2 text-gray-500 hover:text-gray-900 py-2">
+                {isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+                <span className="text-sm font-medium">Shortcuts</span>
+            </button>
+            {isOpen && (
+                <div className="pl-6 pr-2 py-2 space-y-2">
+                    <div className="flex items-center justify-between text-xs">
+                        <span className="text-gray-600">New Task</span>
+                        <span className="font-mono text-gray-400">Alt+N</span>
+                    </div>
+                    <div className="flex items-center justify-between text-xs">
+                        <span className="text-gray-600">Delete Task</span>
+                        <span className="font-mono text-gray-400">Delete</span>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
 
 export const Layout: React.FC<LayoutProps> = ({ children, currentView, onNavigate }) => {
   return (
@@ -62,6 +91,8 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentView, onNavigat
           <NavButton icon={<ListTodo />} label="내 업무" />
           <NavButton icon={<Search />} label="검색" />
           
+          <div className="pt-2"></div>
+          <Shortcuts />
           <div className="pt-2"></div>
           <NavButton 
               icon={<Settings />} 
